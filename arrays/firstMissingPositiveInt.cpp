@@ -16,6 +16,7 @@
 
 using namespace std;
 
+//runtime O(n) and space O(n)
 int bruteForce_firstMissingPositiveInt(vector<int> &v){
      unordered_set<int> us;
      for(auto a: v){
@@ -29,6 +30,7 @@ int bruteForce_firstMissingPositiveInt(vector<int> &v){
      return v.size()+1;
 }
 
+//runtime O(n) and space O(1)
 int firstMissingPositiveInt(vector<int> &v){
         int n=v.size();
         int idx=0;
