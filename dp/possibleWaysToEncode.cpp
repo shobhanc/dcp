@@ -13,6 +13,35 @@
 
 using namespace std;
 
+//iterative solution
+//O(N) time and O(1) space
+int iterEncodeMessage(string str){
+	int len=str.length();
+	if(len==0)
+		return 0;
+	if(str[0]=='0')
+		return 0;
+	int p=1;//previous
+	int pp=0;//previous previous
+	for(int i=len-1; i>=0; i--){
+		int cur=0;
+		if(str[i]=='0'){//ignore
+			cur=0;
+		}else{//no change
+			cur=p;
+		}
+		if(i<len-1 &&
+		((str[i]=='1' && str[i+1]>='0' && str[i+1]<='9') ||
+		 (str[i]=='2' && str[i+1]>='0' && str[i+1]<='6'))){//pp,p,cur ..so add pp to cur
+			cur+=pp;
+		}
+		//swap to update
+		pp=p;
+		p=cur;
+	}
+	return p;
+}
+
 //recursion
 //O(2^N) time and O(N) space
 int recEncodeMessage(string str, int i=0){
