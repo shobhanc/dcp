@@ -25,6 +25,7 @@ bool isValid(string &str){
 	return false;
 }
 
+//time O(1) and space  O(1)
 vector<string> validIPAddresses(string str) {
 	// Write your code here.
 	vector<string> v;
