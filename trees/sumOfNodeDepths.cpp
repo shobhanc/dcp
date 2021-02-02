@@ -27,6 +27,7 @@ struct nodeDepth{
 	int depth;
 };
 
+//time O(N) and space O(N)
 int nodeDepths(BinaryTree *root) {
 	stack<struct nodeDepth> stNode;
 	stNode.push({root, 0});
