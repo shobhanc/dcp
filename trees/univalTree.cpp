@@ -70,7 +70,7 @@ bool univalHelper(TreeNode* root, int val, int *count){
 	}
         //found a unival subtree
         (*count)++;
-        tell the caller root if it can consider this path for unival
+        //tell the caller root if it can consider this path for unival
 	return root->val==val;
 }
 

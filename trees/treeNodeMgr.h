@@ -6,6 +6,7 @@
 #define TREENODEMGR_H
 #include<vector>
 #include<sstream>
+#include<stack>
 #include<queue>
 #include "treeNode.h"
 
@@ -13,31 +14,80 @@ using namespace std;
 
 class TreeNodeMgr{
 	public:
-
-		void inorderRec( TreeNode *root, vector<int> &res){
+		//time O(N) space O(N)
+		void inOrderRec( TreeNode *root, vector<int> &res){
 			if(root==nullptr){
 				return;
 			}
-			inorderRec(root->left, res);
+			inOrderRec(root->left, res);
 			res.push_back(root->val);
-			inorderRec(root->right, res);
+			inOrderRec(root->right, res);
 		}
 
-		void preorderRec( TreeNode *root, vector<int> &res){
+		//time O(N) space O(N)
+		void inOrderIter( TreeNode *root, vector<int> &res){
+			stack<TreeNode*> st;
+			while(root || !st.empty())
+			{
+				while(root){
+					st.push(root);
+					root=root->left;
+				}
+				root=st.top();
+				st.pop();
+				res.push_back(root->val);
+				root=root->right;
+			}
+		}
+
+		//time O(N) space O(N)
+		void preOrderRec( TreeNode *root, vector<int> &res){
 			if(root==nullptr){
 				return;
 			}
 			res.push_back(root->val);
-			inorderRec(root->left, res);
-			inorderRec(root->right, res);
+			preOrderRec(root->left, res);
+			preOrderRec(root->right, res);
 		}
 
-		void postorderRec( TreeNode *root, vector<int> &res){
+		//time O(N) space O(N)
+		void preOrderIter( TreeNode *root, vector<int> &res){
+			stack<TreeNode*> st;
+			st.push(root);
+			while(!st.empty())
+			{
+				root=st.top();
+				st.pop();
+				res.push_back(root->val);
+				if(root->right)st.push(root->right);
+				if(root->left)st.push(root->left);
+			}
+		}
+
+		//time O(h) space O(N) 
+		void preOrderIter2( TreeNode *root, vector<int> &array){
+			stack<TreeNode*> st;
+			while(root || !st.empty())
+			{
+				while(root){
+					array.push_back(root->val);
+					if(root->right)
+						st.push(root->right);
+					root=root->left;
+				}
+				if(!st.empty()){
+					root=st.top();
+					st.pop();
+				}
+			}
+		}
+
+		void postOrderRec( TreeNode *root, vector<int> &res){
 			if(root==nullptr){
 				return;
 			}
-			inorderRec(root->left, res);
-			inorderRec(root->right, res);
+			postOrderRec(root->left, res);
+			postOrderRec(root->right, res);
 			res.push_back(root->val);
 		}
 
