@@ -97,3 +97,29 @@ public:
     
 
 };
+
+class BST {
+public:
+  int value;
+  BST *left;
+  BST *right;
+
+  BST(int val);
+  BST &insert(int val);
+};
+
+//time O(N) and space O(N)
+bool helper(BST* tree, int mn, int mx){
+	 if(tree==NULL){
+      return true;
+	 }
+	if(tree->value<mn || tree->value>=mx){
+      return false;
+	 }
+	 return helper(tree->left, mn, tree->value) &&
+		      helper(tree->right, tree->value, mx);
+}
+
+bool validateBst(BST *tree) {
+	return helper(tree, INT_MIN, INT_MAX);
+}
