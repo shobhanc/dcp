@@ -29,14 +29,19 @@ class TreeNodeMgr{
 			stack<TreeNode*> st;
 			while(root || !st.empty())
 			{
-				while(root){
+				//stack up the left most nodes
+				//got to left most leaf
+				if(root){
 					st.push(root);
 					root=root->left;
+				}else{
+					//pop and capture current node
+					root=st.top();
+					st.pop();
+					res.push_back(root->val);
+					//now stack up the right node's leftmost path
+					root=root->right;
 				}
-				root=st.top();
-				st.pop();
-				res.push_back(root->val);
-				root=root->right;
 			}
 		}
 
@@ -53,12 +58,15 @@ class TreeNodeMgr{
 		//time O(N) space O(N)
 		void preOrderIter( TreeNode *root, vector<int> &res){
 			stack<TreeNode*> st;
+			//init stack with root
 			st.push(root);
 			while(!st.empty())
 			{
+				//pop and capture current node
 				root=st.top();
 				st.pop();
 				res.push_back(root->val);
+				//push right and then left to stack
 				if(root->right)st.push(root->right);
 				if(root->left)st.push(root->left);
 			}
@@ -70,11 +78,19 @@ class TreeNodeMgr{
 			while(root || !st.empty())
 			{
 				while(root){
+					//gather current node
 					array.push_back(root->val);
+					//capture right node first
+					//and left next to keep left on top
 					if(root->right)
 						st.push(root->right);
+					//go to left node
 					root=root->left;
 				}
+				//node stacked just before root became null
+				//is not captured, to get from stack
+				//and set to root to capture
+				//and stack its right and left leafs
 				if(!st.empty()){
 					root=st.top();
 					st.pop();
@@ -82,6 +98,7 @@ class TreeNodeMgr{
 			}
 		}
 
+		//time O(N) space O(N)
 		void postOrderRec( TreeNode *root, vector<int> &res){
 			if(root==nullptr){
 				return;
@@ -89,6 +106,57 @@ class TreeNodeMgr{
 			postOrderRec(root->left, res);
 			postOrderRec(root->right, res);
 			res.push_back(root->val);
+		}
+
+		//time O(N) and space O(N) with one stack
+		void postOrderTraverseIter(TreeNode *tree, vector<int> &array) {
+						stack<TreeNode*> st;
+						TreeNode* pre=NULL;
+						while(tree || !st.empty()){
+										//stack up all left leafs like inorder
+										if(tree){
+														st.push(tree);
+														tree=tree->left;
+										}else{
+														tree=st.top();
+														//check if leftmost's right is empty or
+														//already processed, if yes capture the node
+														//and set it to already processed
+														//else go capture the right leaf's left
+														//leafs
+														if(tree->right==NULL || tree->right==pre){
+																		st.pop();
+																		array.push_back(tree->val);
+																		pre=tree;
+																		tree=NULL;
+														}else{
+																		tree=tree->right;
+														}
+										}
+						}
+		}
+
+		//time O(N) and space O(N) with two stack
+		void postOrderTraverseIter(TreeNode *tree, vector<int> &array) {
+						stack<TreeNode*> s1,s2;
+						//init s1 with root
+						s1.push(tree);
+						// push each node from s1 to s2 and
+						// push its left and right to s1
+						// and repeat.
+						while(!s1.empty()){
+										tree=s1.top();
+										s2.push(tree);
+										s1.pop();
+										if(tree->left)s1.push(tree->left);
+										if(tree->right)s1.push(tree->right);
+						}
+						//capture all nodes in s2
+						while(!s2.empty()){
+										tree=s2.top();
+										array.push_back(tree->val);
+										s2.pop();
+						}
 		}
 
 		//run time O(N) space O(D) for recursion stack, depth of the tree
