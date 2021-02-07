@@ -10,6 +10,7 @@ int getNextId(vector<int> &array, int curIdx){
 	return nextIdx>=0?nextIdx:nextIdx+(int)array.size();
 }
 
+//time O(N) and space O(1)
 bool hasSingleCycle(vector<int> array) {
 	int visited=0;
 	int curIdx=0;
