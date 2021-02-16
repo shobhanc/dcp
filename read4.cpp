@@ -23,10 +23,12 @@ public:
 	//read till bytes read is less than n
 	//and the read bytes on single read4
 	//has read atleat 4 bytes
+	int cur_bytes_to_copy=0;
         while(read_bytes<n && len==4){
             len=read4(buf4);
-            memcpy(buf+read_bytes, buf4, min(len,n-read_bytes));
-            read_bytes+=min(len,n-read_bytes);
+	    cur_bytes_to_copy=min(len,n-read_bytes);
+            memcpy(buf+read_bytes, buf4, cur_bytes_to_copy);
+            read_bytes+=cur_bytes_to_copy;
         }
         return read_bytes;
     }
